@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+
 import './scss/app.scss';
 import { Header } from './components/Header';
 import { Categories } from './components/Categories';
@@ -25,12 +26,7 @@ function App() {
         </div>
         <h2 className="content__title">Все пиццы</h2>
         <div className="content__items">
-          {categoriesData.map((el,i) => (<PizzaBlock title={el.title} 
-                                                   price={el.price}
-                                                   imageUrl={el.imageUrl}
-                                                   sizes={el.sizes}
-                                                   types={el.types}
-                                                   key={i}  />))}
+          {categoriesData.map((el,i) => (<PizzaBlock {...el} key={i} />))}
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 export function PizzaBlock({title, sizes, price, types, imageUrl}) {
   const [activePizzaButton, setActivePizzaButton] = React.useState(0);
@@ -14,12 +14,15 @@ export function PizzaBlock({title, sizes, price, types, imageUrl}) {
 <h4 className="pizza-block__title">{title}</h4>
 <div className="pizza-block__selector">
   <ul>
-    {types.map((el, i) => <li key={i} onClick={() => setActivePizzaButton(i)} 
-                              className={activePizzaButton == i ? 'active' : ''}>{typesPizz[el]}</li>)}
+    {types.map((el, i) => (
+      <li key={i} 
+          onClick={() => setActivePizzaButton(i)} 
+          className={activePizzaButton == i ? 'active' : ''}>{typesPizz[el]}</li>))}
   </ul>
   <ul>
     {sizes.map((el, i) => (
-      <li key={i} onClick={() => setActiveSizaButton(i)} 
+      <li key={i} 
+          onClick={() => setActiveSizaButton(i)} 
           className={activeSizeButton == i ? "active" : ''}>{el} см.</li>
     ))}
   </ul>
