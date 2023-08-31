@@ -16,10 +16,13 @@ export function Home() {
       .then((el) => setItems(el.data))
         setIsLoading(false)
     })()
+    window.scrollTo(0,0)
     },[]);
 
   return (
     <>
+
+<div className="container">
     <div className="content__top">
          <Categories />
           <Sort />
@@ -30,6 +33,7 @@ export function Home() {
                 ? [...Array(8)].map((_, i) => <Skeleton key={i} />)
                 : items.map((el, i) => <PizzaBlock key={i} {...el} />)}
         </div>
+</div>
     </>
   )
 }
