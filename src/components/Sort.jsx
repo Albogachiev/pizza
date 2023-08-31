@@ -1,11 +1,13 @@
 import React from 'react';
 
-export function Sort() {
+export function Sort({setTypeSort, typeSort}) {
   const [openPopup, setOpenPopup] = React.useState(false);
-  const [selectedPopup, setSelectedPopup] = React.useState(0);
-  const list = ['популярности','цене','алфавиту'];
-  const onClickPopup = (ind) => {
-    setSelectedPopup(ind);
+  const list = [{name:'популярности', sort:'rating'},
+                {name:'цене', sort:'price',},
+                {name:'алфавиту', sort:'title',}
+              ];
+  const onClickPopup = (obj) => {
+    setTypeSort(obj);
     setOpenPopup(!openPopup);
   }
 
@@ -25,14 +27,14 @@ export function Sort() {
                 />
               </svg>
               <b>Сортировка по:</b>
-              <span onClick={() => setOpenPopup(!openPopup)}>{list[selectedPopup]}</span>
+              <span onClick={() => setOpenPopup(!openPopup)}>{typeSort.name}</span>
             </div>
             {openPopup && (<div className="sort__popup">
               <ul>
-                {list.map((el,i) => (
+                {list.map((obj,i) => (
                   <li key={i} 
-                      onClick={() => onClickPopup(i)} 
-                      className={selectedPopup == i ? 'active' : ''}>{el}</li>
+                      onClick={() => onClickPopup(obj)} 
+                      className={typeSort.sort == obj.sort ? 'active' : ''}>{obj.name}</li>
                 ))}
               </ul>
             </div>)}

@@ -4,6 +4,7 @@ export function PizzaBlock({title, sizes, price, types, imageUrl}) {
   const [activePizzaButton, setActivePizzaButton] = React.useState(0);
   const [activeSizeButton, setActiveSizaButton] = React.useState(0);
   const typesPizz = ['тонкая',  'традиционная'];
+
   return (
     <div className='pizza-block-wrapper'>
 
