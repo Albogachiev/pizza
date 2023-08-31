@@ -5,6 +5,8 @@ export function PizzaBlock({title, sizes, price, types, imageUrl}) {
   const [activeSizeButton, setActiveSizaButton] = React.useState(0);
   const typesPizz = ['тонкая',  'традиционная'];
   return (
+    <div className='pizza-block-wrapper'>
+
        <div className="pizza-block">
 <img
   className="pizza-block__image"
@@ -47,5 +49,6 @@ export function PizzaBlock({title, sizes, price, types, imageUrl}) {
   </div>
 </div>
 </div> 
+    </div>
   )
 }
