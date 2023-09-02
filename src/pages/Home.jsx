@@ -5,12 +5,14 @@ import { Skeleton } from '../components/PizzaBlock/Skeleton';
 import { PizzaBlock } from '../components/PizzaBlock/PizzaBlock';
 import { Categories } from '../components/Categories';
 import { Sort } from '../components/Sort';
+import { Pagination } from '../components/Pagination/Pagination';
 
 export function Home({searchValue}) {
     const [items, setItems] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(true);
     const [idCategpries, setIdCategories] = React.useState(0);
     const [typeSort, setTypeSort] = React.useState({name:'популярности', sort:'rating'});
+    const [currenPage, setCurrentPage] = React.useState(1);
 
     const idCat = idCategpries > 0 ? `${idCategpries}` : '';
     const sort = typeSort.sort;
@@ -18,13 +20,13 @@ export function Home({searchValue}) {
   
     React.useEffect(() => {
       setIsLoading(true)
-      axios.get(`https://64ecb1c9f9b2b70f2bfacce8.mockapi.io/categoriPizza?category=${idCat}&sortBy=${sort}`)
+      axios.get(`https://64ecb1c9f9b2b70f2bfacce8.mockapi.io/categoriPizza?page=${currenPage}&limit=4&category=${idCat}&sortBy=${sort}`)
       .then((el) => {
         setItems(el.data)
         setIsLoading(false)
       })
       window.scrollTo(0,0)
-    },[idCategpries,typeSort]);
+    },[idCategpries,searchValue,typeSort,currenPage]);
 
     const skeleton = [...Array(8)].map((_, i) => <Skeleton key={i} />);
     const filteredItems = items.filter((obj) => {
@@ -46,6 +48,7 @@ export function Home({searchValue}) {
                 ? skeleton
                 : itemsData}
         </div>
+        <Pagination setCurrentPage={setCurrentPage} />
 </div>
     </>
   )
