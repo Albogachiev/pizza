@@ -6,7 +6,7 @@ import { PizzaBlock } from '../components/PizzaBlock/PizzaBlock';
 import { Categories } from '../components/Categories';
 import { Sort } from '../components/Sort';
 
-export function Home() {
+export function Home({searchValue}) {
     const [items, setItems] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(true);
     const [idCategpries, setIdCategories] = React.useState(0);
@@ -14,6 +14,7 @@ export function Home() {
 
     const idCat = idCategpries > 0 ? `${idCategpries}` : '';
     const sort = typeSort.sort;
+    //const searchUrl = searchValue ? `&search=${searchValue}` : '';
   
     React.useEffect(() => {
       setIsLoading(true)
@@ -24,6 +25,13 @@ export function Home() {
       })
       window.scrollTo(0,0)
     },[idCategpries,typeSort]);
+
+    const skeleton = [...Array(8)].map((_, i) => <Skeleton key={i} />);
+    const filteredItems = items.filter((obj) => {
+      return obj.title.toLowerCase().includes(searchValue.toLowerCase())
+    })
+    const itemsData = filteredItems.map((el, i) => <PizzaBlock key={i} {...el} />);
+
   return (
     <>
 
@@ -35,8 +43,8 @@ export function Home() {
         <h2 className="content__title">Все пиццы</h2>
         <div className="content__items">
           {isLoading 
-                ? [...Array(8)].map((_, i) => <Skeleton key={i} />)
-                : items.map((el, i) => <PizzaBlock key={i} {...el} />)}
+                ? skeleton
+                : itemsData}
         </div>
 </div>
     </>
