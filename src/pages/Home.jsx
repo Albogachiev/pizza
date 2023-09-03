@@ -6,13 +6,15 @@ import { PizzaBlock } from '../components/PizzaBlock/PizzaBlock';
 import { Categories } from '../components/Categories';
 import { Sort } from '../components/Sort';
 import { Pagination } from '../components/Pagination/Pagination';
+import { AppContext } from '../App';
 
-export function Home({searchValue}) {
+export function Home() {
     const [items, setItems] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(true);
     const [idCategpries, setIdCategories] = React.useState(0);
     const [typeSort, setTypeSort] = React.useState({name:'популярности', sort:'rating'});
     const [currenPage, setCurrentPage] = React.useState(1);
+    const { searchValue } = React.useContext(AppContext);
 
     const idCat = idCategpries > 0 ? `${idCategpries}` : '';
     const sort = typeSort.sort;
