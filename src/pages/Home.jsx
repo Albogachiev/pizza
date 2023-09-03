@@ -1,25 +1,26 @@
 import React from 'react';
 import axios from 'axios';
 import { useSelector, useDispatch} from 'react-redux';
-import { setCategoryId } from '../redux/slices/filterSlice'
+import { setCategoryId } from '../redux/slices/filterSlice';
 
 import { Skeleton } from '../components/PizzaBlock/Skeleton';
 import { PizzaBlock } from '../components/PizzaBlock/PizzaBlock';
 import { Categories } from '../components/Categories';
 import { Sort } from '../components/Sort';
 import { Pagination } from '../components/Pagination/Pagination';
-import { AppContext } from '../App';
 
 export function Home() {
   const dispatch = useDispatch();
+  const setIdCategories = (id) => dispatch(setCategoryId(id));
+  const setCurrentPage = (num) => dispatch(setCurrentPage(num));
+
+  const currenPage = useSelector((state) => state.filter.currentPage);
+  const searchValue = useSelector((state) => state.filter.search);
   const idCategpries = useSelector((state) => state.filter.categoryId);
   const sort = useSelector((state) => state.filter.sort.sort);
-  const setIdCategories = (id) => dispatch(setCategoryId(id));
 
     const [items, setItems] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(true);
-    const [currenPage, setCurrentPage] = React.useState(1);
-    const { searchValue } = React.useContext(AppContext);
 
     const idCat = idCategpries > 0 ? `${idCategpries}` : '';
     //const searchUrl = searchValue ? `&search=${searchValue}` : '';
@@ -36,7 +37,7 @@ export function Home() {
 
     const skeleton = [...Array(8)].map((_, i) => <Skeleton key={i} />);
     const filteredItems = items.filter((obj) => {
-      return obj.title.toLowerCase().includes(searchValue.toLowerCase())
+      return obj.title.toLowerCase().includes(searchValue.toLowerCase());
     })
     const itemsData = filteredItems.map((el, i) => <PizzaBlock key={i} {...el} />);
 
@@ -54,7 +55,7 @@ export function Home() {
                 ? skeleton
                 : itemsData}
         </div>
-        <Pagination setCurrentPage={setCurrentPage} />
+        <Pagination />
 </div>
     </>
   )
