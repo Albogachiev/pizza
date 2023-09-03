@@ -51,6 +51,7 @@
 
 * ReactJS 18
 * MockApi (Вместо БД)
+* Redux Toolkit (хранение данных / пицц)
 * React Router v6 (навигация) 
 * Axios (отправка запроса на бэкенд)
 * React Hooks (хуки)

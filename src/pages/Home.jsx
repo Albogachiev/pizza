@@ -1,5 +1,7 @@
 import React from 'react';
 import axios from 'axios';
+import { useSelector, useDispatch} from 'react-redux';
+import { setCategoryId } from '../redux/slices/filterSlice'
 
 import { Skeleton } from '../components/PizzaBlock/Skeleton';
 import { PizzaBlock } from '../components/PizzaBlock/PizzaBlock';
@@ -9,15 +11,17 @@ import { Pagination } from '../components/Pagination/Pagination';
 import { AppContext } from '../App';
 
 export function Home() {
+  const dispatch = useDispatch();
+  const idCategpries = useSelector((state) => state.filter.categoryId);
+  const sort = useSelector((state) => state.filter.sort.sort);
+  const setIdCategories = (id) => dispatch(setCategoryId(id));
+
     const [items, setItems] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(true);
-    const [idCategpries, setIdCategories] = React.useState(0);
-    const [typeSort, setTypeSort] = React.useState({name:'популярности', sort:'rating'});
     const [currenPage, setCurrentPage] = React.useState(1);
     const { searchValue } = React.useContext(AppContext);
 
     const idCat = idCategpries > 0 ? `${idCategpries}` : '';
-    const sort = typeSort.sort;
     //const searchUrl = searchValue ? `&search=${searchValue}` : '';
   
     React.useEffect(() => {
@@ -28,7 +32,7 @@ export function Home() {
         setIsLoading(false)
       })
       window.scrollTo(0,0)
-    },[idCategpries,searchValue,typeSort,currenPage]);
+    },[idCategpries,sort,searchValue,currenPage]);
 
     const skeleton = [...Array(8)].map((_, i) => <Skeleton key={i} />);
     const filteredItems = items.filter((obj) => {
@@ -42,7 +46,7 @@ export function Home() {
 <div className="container">
     <div className="content__top">
          <Categories setIdCategories={(i) => setIdCategories(i)} idCategpries={idCategpries} />
-          <Sort typeSort={typeSort} setTypeSort={(i) => setTypeSort(i)}/>
+          <Sort />
         </div>
         <h2 className="content__title">Все пиццы</h2>
         <div className="content__items">
