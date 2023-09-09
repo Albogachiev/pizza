@@ -14,9 +14,10 @@ import { Pagination } from '../components/Pagination/Pagination';
 export function Home() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isSearch = React.useRef(false);
   const setIdCategories = (id) => dispatch(setCategoryId(id));
   const setCurrentPage = (num) => dispatch(setCurrentPage(num));
+  const isSearch = React.useRef(false);
+  const isMounted = React.useRef(false);
 
   const currenPage = useSelector((state) => state.filter.currentPage);
   const searchValue = useSelector((state) => state.filter.search);
@@ -56,12 +57,15 @@ export function Home() {
     },[idCategpries,sortData,searchValue,currenPage]);
     
     React.useEffect(() => {
+      if(isMounted.current){
         let qsData = qs.stringify({
           page:String(currenPage),
           category:String(idCat),
           sortBy:sortData
         })
         navigate(`?${qsData}`) 
+      }
+      isMounted.current = true;
     },[idCategpries,sortData,currenPage])
 
     const skeleton = [...Array(8)].map((_, i) => <Skeleton key={i} />);
