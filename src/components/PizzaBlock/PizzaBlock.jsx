@@ -1,10 +1,25 @@
 import React from 'react';
+import { useSelector, Dispatch, useDispatch } from 'react-redux';
 
-export function PizzaBlock({title, sizes, price, types, imageUrl}) {
+import { addProductCart } from '../../redux/slices/cartSlice';
+
+export function PizzaBlock({title, id, sizes, price, types, imageUrl}) {
+  const dispatch = useDispatch();
   const [activePizzaButton, setActivePizzaButton] = React.useState(0);
   const [activeSizeButton, setActiveSizaButton] = React.useState(0);
   const typesPizz = ['тонкая',  'традиционная'];
-
+  const items = useSelector((state) => console.log(state))
+function addItemCart(){
+  const item = {
+   id,
+   title,
+   price,
+   imageUrl,
+   type:activePizzaButton,
+   size:activeSizeButton
+  }
+  dispatch(addProductCart(item))
+}
   return (
     <div className='pizza-block-wrapper'>
 
@@ -32,7 +47,7 @@ export function PizzaBlock({title, sizes, price, types, imageUrl}) {
 </div>
 <div className="pizza-block__bottom">
   <div className="pizza-block__price">от {price}₽</div>
-  <div className="button button--outline button--add">
+  <div onClick={addItemCart} className="button button--outline button--add">
     <svg
       width="12"
       height="12"
