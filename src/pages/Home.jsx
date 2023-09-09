@@ -1,39 +1,68 @@
 import React from 'react';
 import axios from 'axios';
 import { useSelector, useDispatch} from 'react-redux';
-import { setCategoryId } from '../redux/slices/filterSlice';
+import qs  from 'qs';
+import { useNavigate } from 'react-router-dom';
 
+import { setCategoryId, setFilters } from '../redux/slices/filterSlice';
 import { Skeleton } from '../components/PizzaBlock/Skeleton';
 import { PizzaBlock } from '../components/PizzaBlock/PizzaBlock';
 import { Categories } from '../components/Categories';
-import { Sort } from '../components/Sort';
+import { Sort, list } from '../components/Sort';
 import { Pagination } from '../components/Pagination/Pagination';
 
 export function Home() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const isSearch = React.useRef(false);
   const setIdCategories = (id) => dispatch(setCategoryId(id));
   const setCurrentPage = (num) => dispatch(setCurrentPage(num));
 
   const currenPage = useSelector((state) => state.filter.currentPage);
   const searchValue = useSelector((state) => state.filter.search);
   const idCategpries = useSelector((state) => state.filter.categoryId);
-  const sort = useSelector((state) => state.filter.sort.sort);
+  const sortData = useSelector((state) => state.filter.sort.sort); 
 
     const [items, setItems] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(true);
 
     const idCat = idCategpries > 0 ? `${idCategpries}` : '';
-    //const searchUrl = searchValue ? `&search=${searchValue}` : '';
+    //const searchUrl = searchValue ? `&search=${searchValue}` : ''; 
+
+    React.useEffect(() => {
+      if(window.location.search){ 
+        const params = qs.parse(window.location.search.substring(1));
+        const sortFilt = list.find((obj) => obj.sort == params.sortBy);
+        
+        dispatch(setFilters({
+          ...params,
+          sortFilt
+        }))
+        isSearch.current = true;
+      }
+    },[])
   
     React.useEffect(() => {
-      setIsLoading(true)
-      axios.get(`https://64ecb1c9f9b2b70f2bfacce8.mockapi.io/categoriPizza?page=${currenPage}&limit=4&category=${idCat}&sortBy=${sort}`)
-      .then((el) => {
-        setItems(el.data)
-        setIsLoading(false)
-      })
       window.scrollTo(0,0)
-    },[idCategpries,sort,searchValue,currenPage]);
+      if(!isSearch.current){
+        setIsLoading(true)
+        axios.get(`https://64ecb1c9f9b2b70f2bfacce8.mockapi.io/categoriPizza?page=${currenPage}&limit=4&category=${idCat}&sortBy=${sortData}`)
+        .then((el) => {
+          setItems(el.data)
+          setIsLoading(false)
+        })
+      }
+      isSearch.current = false;
+    },[idCategpries,sortData,searchValue,currenPage]);
+    
+    React.useEffect(() => {
+        let qsData = qs.stringify({
+          page:String(currenPage),
+          category:String(idCat),
+          sortBy:sortData
+        })
+        navigate(`?${qsData}`) 
+    },[idCategpries,sortData,currenPage])
 
     const skeleton = [...Array(8)].map((_, i) => <Skeleton key={i} />);
     const filteredItems = items.filter((obj) => {
