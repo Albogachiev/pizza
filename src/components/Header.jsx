@@ -9,6 +9,9 @@ export function Header() {
     return (obj.price * obj.count) + sum
   },0));
   const items = useSelector((state) => state.cart.items);
+  const itemsQuantity = items?.reduce((sum, obj) => {
+    return sum + obj.count
+  },0)
   
   return (
     <div className="header">
@@ -56,7 +59,7 @@ export function Header() {
                 strokeLinejoin="round"
               />
             </svg>
-            <span>{items.length}</span>
+            <span>{itemsQuantity}</span>
           </Link>
         </div>
       </div>
