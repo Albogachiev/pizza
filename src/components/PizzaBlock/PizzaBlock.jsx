@@ -7,16 +7,19 @@ export function PizzaBlock({title, id, sizes, price, types, imageUrl}) {
   const dispatch = useDispatch();
   const [activePizzaButton, setActivePizzaButton] = React.useState(0);
   const [activeSizeButton, setActiveSizaButton] = React.useState(0);
+  const addedCartCount = useSelector((state) => state.cart.items?.find((obj) => obj.id === id));
+  const count = addedCartCount ? addedCartCount.count : 0;
   const typesPizz = ['тонкая',  'традиционная'];
-  const items = useSelector((state) => console.log(state))
+  const sizePizz = [];
+  
 function addItemCart(){
   const item = {
    id,
    title,
    price,
    imageUrl,
-   type:activePizzaButton,
-   size:activeSizeButton
+   type:typesPizz[activePizzaButton],
+   size:sizePizz[activeSizeButton]
   }
   dispatch(addProductCart(item))
 }
@@ -61,7 +64,7 @@ function addItemCart(){
       />
     </svg>
     <span>Добавить</span>
-    <i>2</i>
+   {count > 0 && <i>{count}</i>}
   </div>
 </div>
 </div> 
