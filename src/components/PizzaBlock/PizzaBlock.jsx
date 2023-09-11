@@ -10,7 +10,7 @@ export function PizzaBlock({title, id, sizes, price, types, imageUrl}) {
   const addedCartCount = useSelector((state) => state.cart.items?.find((obj) => obj.id === id));
   const count = addedCartCount ? addedCartCount.count : 0;
   const typesPizz = ['тонкая',  'традиционная'];
-  const sizePizz = [];
+  const sizePizz = [26, 30, 40];
   
 function addItemCart(){
   const item = {

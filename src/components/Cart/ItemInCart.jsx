@@ -1,9 +1,9 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
-import { repeadAddProductCart, clearItems, removeProduct, removeProductCart } from '../../redux/slices/cartSlice';
+import { repeadAddProductCart, removeProduct, removeProductCart } from '../../redux/slices/cartSlice';
 
-export function ItemInCart({title, id, price, type, count, imageUrl}) {
+export function ItemInCart({title, id, price, size, type, count, imageUrl}) {
    const dispatch = useDispatch();
    let priceData = price * count;
 
@@ -29,7 +29,7 @@ alt="Pizza"
 </div>
 <div className="cart__item-info">
 <h3>{title}</h3>
-<p>{type}</p>
+<p>{type} {size} см</p>
 </div>
 <div className="cart__item-count">
 <div onClick={clickMinus} className="button button--outline button--circle cart__item-count-minus">

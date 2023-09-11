@@ -1,10 +1,10 @@
 import React from 'react';
-import axios from 'axios';
 import { useSelector, useDispatch} from 'react-redux';
 import qs  from 'qs';
 import { useNavigate } from 'react-router-dom';
 
 import { setCategoryId, setFilters } from '../redux/slices/filterSlice';
+import { fetchPizzas } from '../redux/slices/pizzaSlice';
 import { Skeleton } from '../components/PizzaBlock/Skeleton';
 import { PizzaBlock } from '../components/PizzaBlock/PizzaBlock';
 import { Categories } from '../components/Categories';
@@ -18,15 +18,14 @@ export function Home() {
   const setCurrentPage = (num) => dispatch(setCurrentPage(num));
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
-
   const currenPage = useSelector((state) => state.filter.currentPage);
   const searchValue = useSelector((state) => state.filter.search);
   const idCategpries = useSelector((state) => state.filter.categoryId);
   const sortData = useSelector((state) => state.filter.sort.sort); 
-
-    const [items, setItems] = React.useState([]);
-    const [isLoading, setIsLoading] = React.useState(true);
-
+  const {items, status} = useSelector((state) => state.pizza);
+  
+  const [isLoading, setIsLoading] = React.useState(true);
+  
     const idCat = idCategpries > 0 ? `${idCategpries}` : '';
     //const searchUrl = searchValue ? `&search=${searchValue}` : ''; 
 
@@ -42,18 +41,21 @@ export function Home() {
         isSearch.current = true;
       }
     },[])
+
+    async function getDataUrl(){
+        if(!isSearch.current){
+          dispatch(fetchPizzas({
+            currenPage,
+            idCat,
+            sortData,
+          }))
+        }
+        isSearch.current = false;
+    }
   
     React.useEffect(() => {
       window.scrollTo(0,0)
-      if(!isSearch.current){
-        setIsLoading(true)
-        axios.get(`https://64ecb1c9f9b2b70f2bfacce8.mockapi.io/categoriPizza?page=${currenPage}&limit=4&category=${idCat}&sortBy=${sortData}`)
-        .then((el) => {
-          setItems(el.data)
-          setIsLoading(false)
-        })
-      }
-      isSearch.current = false;
+      getDataUrl()
     },[idCategpries,sortData,searchValue,currenPage]);
     
     React.useEffect(() => {
@@ -82,11 +84,18 @@ export function Home() {
           <Sort />
         </div>
         <h2 className="content__title">Все пиццы</h2>
+        {status === 'error' ? 
+        (<div className='content__error-info'>
+                <span>😕</span>
+            <h2>К сожалению, произошла ошибка</h2>
+            <p className='description'>Не получилось загрузить пиццы, повторите попытку позже</p>
+           
+          </div>)             :
         <div className="content__items">
-          {isLoading 
+          {status === 'loading' 
                 ? skeleton
                 : itemsData}
-        </div>
+        </div>}
         <Pagination />
 </div>
     </>

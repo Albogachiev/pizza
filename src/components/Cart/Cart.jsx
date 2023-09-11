@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { ItemInCart } from './ItemInCart';
 import { clearItems } from '../../redux/slices/cartSlice';
+import { CartEmpty } from './CartEmpty';
 
 export function Cart() {
   const dispatch = useDispatch();
@@ -20,6 +21,10 @@ function clearCart(){
     if(window.confirm('Очистить корзину?')){
         dispatch(clearItems())
     }
+   }
+
+   if(!sumCart){
+    return <CartEmpty />
    }
 
   return (

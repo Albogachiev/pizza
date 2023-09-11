@@ -18,6 +18,7 @@ const cartSlice = createSlice({
         state.items = state.items.filter((el) => el.id !== actions.payload)
     },
     addProductCart(state, actions){
+        console.log(actions.payload)
         const findItem = state.items.find((obj) => obj.id === actions.payload.id);
         if(findItem){
             findItem.count++;
