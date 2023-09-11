@@ -1,13 +1,14 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
-import { repeadAddProductCart, removeProduct, removeProductCart } from '../../redux/slices/cartSlice';
+import { repeadAddProductCart, clearItems, removeProduct, removeProductCart } from '../../redux/slices/cartSlice';
 
 export function ItemInCart({title, id, price, type, count, imageUrl}) {
    const dispatch = useDispatch();
+   let priceData = price * count;
 
    function clickPlus(){
-       dispatch(repeadAddProductCart(id));
+     dispatch(repeadAddProductCart(id));
    }
    function clickMinus(){
     dispatch(removeProductCart(id));
@@ -15,6 +16,7 @@ export function ItemInCart({title, id, price, type, count, imageUrl}) {
    function clickRemove(){
     dispatch(removeProduct(id))
    }
+   
   return (
     <div className="content__items1">
 <div className="cart__item">
@@ -47,7 +49,7 @@ alt="Pizza"
 </div>
 </div>
 <div className="cart__item-price">
-<b>{price} ₽</b>
+<b>{priceData} ₽</b>
 </div>
 <div className="cart__item-remove">
 <div onClick={clickRemove} className="button button--outline button--circle">

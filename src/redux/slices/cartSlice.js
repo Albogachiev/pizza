@@ -34,7 +34,7 @@ const cartSlice = createSlice({
     repeadAddProductCart(state, actions){
         const elemCart = state.items.find((el) => el.id === actions.payload);
         if(elemCart){
-            elemCart.count++
+            elemCart.count++;
         }
         state.totalPrice = state.items.reduce((sum, obj) => {
             return Number(obj.price) + sum
@@ -53,7 +53,8 @@ const cartSlice = createSlice({
         state.items = state.items.filter((el) => el.id !== actions.payload)
     },
     clearItems(state, actions){
-        state.items = []
+        state.items = [];
+        state.totalPrice = 0;
     }
    
   },

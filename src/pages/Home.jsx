@@ -76,7 +76,6 @@ export function Home() {
 
   return (
     <>
-
 <div className="container">
     <div className="content__top">
          <Categories setIdCategories={(i) => setIdCategories(i)} idCategpries={idCategpries} />
