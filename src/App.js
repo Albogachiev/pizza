@@ -6,6 +6,7 @@ import { Header } from './components/Header';
 import { Home } from './pages/Home';
 import { NotFound } from './pages/NotFound';
 import { Cart } from './components/Cart/Cart';
+import { FullPizza } from './components/FullPizza.jsx/FullPizza';
 
 export const AppContext = React.createContext()
 
@@ -18,6 +19,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/cart' element={<Cart />} />
+        <Route path='/fullPizza/:id' element={<FullPizza />} />
         <Route path='*' element={<NotFound />} />
       </Routes> 
     </div>

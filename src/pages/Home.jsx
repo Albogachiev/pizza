@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch} from 'react-redux';
 import qs  from 'qs';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { setCategoryId, setFilters } from '../redux/slices/filterSlice';
 import { fetchPizzas } from '../redux/slices/pizzaSlice';
@@ -23,8 +23,6 @@ export function Home() {
   const idCategpries = useSelector((state) => state.filter.categoryId);
   const sortData = useSelector((state) => state.filter.sort.sort); 
   const {items, status} = useSelector((state) => state.pizza);
-  
-  const [isLoading, setIsLoading] = React.useState(true);
   
     const idCat = idCategpries > 0 ? `${idCategpries}` : '';
     //const searchUrl = searchValue ? `&search=${searchValue}` : ''; 
@@ -74,7 +72,7 @@ export function Home() {
     const filteredItems = items.filter((obj) => {
       return obj.title.toLowerCase().includes(searchValue.toLowerCase());
     })
-    const itemsData = filteredItems.map((el, i) => <PizzaBlock key={i} {...el} />);
+    const itemsData = filteredItems.map((el, i) => <Link to={`fullPizza/${el.id}`} key={i} ><PizzaBlock {...el} /> </Link>);
 
   return (
     <>

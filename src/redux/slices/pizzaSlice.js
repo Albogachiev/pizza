@@ -3,15 +3,24 @@ import axios from 'axios';
 
 export const fetchPizzas = createAsyncThunk(
    'pizza/fetchPizzasById',
-   async ({currenPage, idCat, sortData}) => {
+   async (params, thunkApi) => {
+    const {currenPage, idCat, sortData} = params;
     const { data } = await axios.get(`https://64ecb1c9f9b2b70f2bfacce8.mockapi.io/categoriPizza?page=${currenPage}&limit=4&category=${idCat}&sortBy=${sortData}`)
      return data
    }
  )
 
+ export const fullPizzaData = createAsyncThunk(
+  'fullPizza/:id',
+  async (id) => {
+   const { data } =  await axios.get('https://64ecb1c9f9b2b70f2bfacce8.mockapi.io/categoriPizza/' + id)
+    return data
+  }
+)
+
 const initialState = { 
    items:[],
-   status:'loading'
+   status:'loading',
  }
 
 const pizzaSlice = createSlice({
@@ -20,11 +29,10 @@ const pizzaSlice = createSlice({
   reducers: {
   setItems(state, actions){
     state.items = actions.payload
-  }
+  },
 },
 extraReducers: (builder) => {
-    builder.addCase(
-    fetchPizzas.pending, (state, action) => {
+    builder.addCase(fetchPizzas.pending, (state, action) => {
             state.status = 'loading'
             state.items = []
     },)
@@ -39,5 +47,6 @@ extraReducers: (builder) => {
   },
 })
 
-export const { setItems, } = pizzaSlice.actions
+
+export const { setItems } = pizzaSlice.actions
 export default pizzaSlice.reducer
