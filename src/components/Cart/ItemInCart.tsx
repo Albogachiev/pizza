@@ -3,7 +3,16 @@ import { useDispatch } from 'react-redux';
 
 import { repeadAddProductCart, removeProduct, removeProductCart } from '../../redux/slices/cartSlice';
 
-export function ItemInCart({title, id, price, size, type, count, imageUrl}) {
+type ItemProps = {
+  title:string;
+  id:string;
+  price:number;
+  size:number;
+  type:string;
+  count:number;
+  imageUrl:string
+}
+export const ItemInCart:React.FC <ItemProps> = ({title, id, price, size, type, count, imageUrl}) => {
    const dispatch = useDispatch();
    let priceData = price * count;
 

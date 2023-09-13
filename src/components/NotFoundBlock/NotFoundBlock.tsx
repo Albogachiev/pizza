@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../../scss/components/_not-faund-block.module.scss';
 
-export function NotFoundBlock() {
+export const NotFoundBlock:React.FC = () => {
   return (
     <div className={styles.root}>
         <span>😕</span>

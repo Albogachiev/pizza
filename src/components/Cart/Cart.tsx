@@ -6,14 +6,21 @@ import { ItemInCart } from './ItemInCart';
 import { clearItems } from '../../redux/slices/cartSlice';
 import { CartEmpty } from './CartEmpty';
 
-export function Cart() {
+type StateItems = {
+  cart:{
+    items:any;
+  };
+}
+
+export const Cart:React.FC = () => {
   const dispatch = useDispatch();
-  const items = useSelector((state) => state.cart.items);
-  const sumCart = useSelector((state) => state.cart.items.reduce((sum, obj) => {
+  const items = useSelector((state:StateItems) => state.cart.items);
+  const sumCart = useSelector((state:StateItems) => state.cart.items?.reduce((sum:number, obj:{price:number; 
+                                                                                               count:number}) => {
     return (obj.price * obj.count) + sum
   },0));
 
-  const itemsQuantity = items?.reduce((sum, obj) => {
+  const itemsQuantity = items?.reduce((sum:number, obj:{count:number}) => {
     return sum + obj.count
   },0)
 
@@ -52,7 +59,7 @@ function clearCart(){
         </div>
       </div>
 
-      {items.map((el,i) =>  <ItemInCart key={i} {...el} />)}
+      {items?.map((el:any,i:number) =>  <ItemInCart key={i} {...el} />)}
 
     <div className="cart__bottom">
               <div className="cart__bottom-details">

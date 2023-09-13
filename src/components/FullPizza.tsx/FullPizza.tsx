@@ -4,8 +4,13 @@ import { useDispatch } from 'react-redux';
 
 import { fullPizzaData } from '../../redux/slices/pizzaSlice';
 
-export function FullPizza() {
-    const [pizza, setPizza] = React.useState();
+export function FullPizza(){
+    const [pizza, setPizza] = React.useState<{
+      imageUrl:string;
+      price:number;
+      title:string;
+    }>();
+
     const { id } = useParams();
     const dispatch = useDispatch()
 

@@ -2,23 +2,29 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSort } from '../redux/slices/filterSlice';
 
-export const list = [{name:'популярности', sort:'rating'},
+type ListSort = {
+  name:string;
+  sort:string
+}
+
+export const list:ListSort[] = [{name:'популярности', sort:'rating'},
               {name:'цене', sort:'price',},
               {name:'алфавиту', sort:'title',}
             ];
 export function Sort() {
   const dispatch = useDispatch();
-  const pupupCloseRef = React.useRef()
-  const typeSort = useSelector((state) => state.filter.sort);
+  const pupupCloseRef = React.useRef<HTMLDivElement>(null)
+  const typeSort = useSelector((state:{filter:{sort:{sort:string; 
+                                                     name:string}}}) => state.filter.sort);
   
   const [openPopup, setOpenPopup] = React.useState(false);
-  const onClickPopup = (obj) => {
+  const onClickPopup = (obj:ListSort) => {
     dispatch(setSort(obj));
     setOpenPopup(!openPopup);
   }
 
   React.useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (event:any) => {
       const path = event.composedPath();
       if(!path.includes(pupupCloseRef.current)){
         setOpenPopup(false)

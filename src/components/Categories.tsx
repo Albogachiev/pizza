@@ -1,7 +1,9 @@
-import React from 'react';
+type CategoriesProps = {
+  idCategpries:number;
+  setIdCategories:any
+}
 
-export function Categories({idCategpries, setIdCategories}) {
-
+export const Categories:React.FC <CategoriesProps> = ({idCategpries, setIdCategories}) => {
   const categories = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'];
   return (
     <div className="categories">

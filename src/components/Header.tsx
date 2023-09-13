@@ -1,16 +1,15 @@
-import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import { Search } from './Search/Search';
 import { useSelector } from 'react-redux';
 
 export function Header() {
-  const sumCart = useSelector((state) => state.cart.items.reduce((sum, obj) => {
-    return (obj.price * obj.count) + sum
-  },0));
-  const items = useSelector((state) => state.cart.items);
-  const itemsQuantity = items?.reduce((sum, obj) => {
+  const items = useSelector((state:{cart:{items:any}}) => state.cart.items);
+  const itemsQuantity = items?.reduce((sum:number, obj:{count:number}) => {
     return sum + obj.count
+  },0);
+  const sumCart = items?.reduce((sum:number, obj:{price:number}) => {
+    return sum + obj.price
   },0);
 
   const location = useLocation();
