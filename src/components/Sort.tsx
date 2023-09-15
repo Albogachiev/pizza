@@ -3,23 +3,19 @@ import { useSelector } from 'react-redux';
 import { setSort } from '../redux/slices/filterSlice';
 import { RootState } from '../redux/store';
 import { useAppDispatch } from '../redux/store';
+import { SortData } from '../redux/slices/filterSlice'
 
-type ListSort = {
-  name:string;
-  sort:string
-}
-
-export const list:ListSort[] = [{name:'популярности', sort:'rating'},
+export const list:SortData[] = [{name:'популярности', sort:'rating'},
               {name:'цене', sort:'price',},
               {name:'алфавиту', sort:'title',}
             ];
 export function Sort() {
   const dispatch = useAppDispatch();
   const pupupCloseRef = React.useRef<HTMLDivElement>(null)
-  const typeSort = useSelector((state:RootState) => state.filter.sort);
-  
+  const typeSort:SortData = useSelector((state:RootState) => state.filter.sort);
   const [openPopup, setOpenPopup] = React.useState(false);
-  const onClickPopup = (obj:ListSort) => {
+
+  const onClickPopup = (obj:SortData) => {
     dispatch(setSort(obj));
     setOpenPopup(!openPopup);
   }
@@ -56,14 +52,14 @@ export function Sort() {
                 />
               </svg>
               <b>Сортировка по:</b>
-              <span onClick={() => setOpenPopup(!openPopup)}>{typeSort?.name}</span>
+              <span onClick={() => setOpenPopup(!openPopup)}>{typeSort.name}</span>
             </div>
             {openPopup && (<div className="sort__popup">
               <ul>
                 {list.map((obj,i) => (
                   <li key={i} 
                       onClick={() => onClickPopup(obj)} 
-                      className={typeSort.sort == obj.sort ? 'active' : ''}>{obj?.name}</li>
+                      className={typeSort.sort == obj?.sort ? 'active' : ''}>{obj?.name}</li>
                 ))}
               </ul>
             </div>)}

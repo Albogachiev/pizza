@@ -32,12 +32,11 @@ export const Home:React.FC = () => {
   const currenPage = useSelector((state:RootState) => state.filter.currentPage);
   const searchValue = useSelector((state:RootState) => state.filter.search);
   const idCategpries = useSelector((state:RootState) => state.filter.categoryId);
-  const sortData = useSelector((state:RootState) => state.filter.sort?.sort); 
+  const sortData = useSelector((state:RootState) => state.filter.sort); 
   const {items, status} = useSelector((state:RootState) => state.pizza);
-  
     const idCat = idCategpries > 0 ? `${idCategpries}` : '';
-    //const searchUrl = searchValue ? `&search=${searchValue}` : ''; 
-
+   //const searchUrl = searchValue ? `&search=${searchValue}` : ''; 
+    
     React.useEffect(() => {
       if(window.location.search){ 
         const params = qs.parse(window.location.search.substring(1));
@@ -56,7 +55,7 @@ export const Home:React.FC = () => {
           dispatch(fetchPizzas({
             currenPage,
             idCat,
-            sortData,
+            sortData:sortData.sort,
           }))
         }
         isSearch.current = false;
@@ -69,14 +68,14 @@ export const Home:React.FC = () => {
     
     React.useEffect(() => {
       if(isMounted.current){
-        let qsData = qs.stringify({
-          page:currenPage,
-          category:idCat,
-          sortBy:sortData
-        })
-        navigate(`?${qsData}`) 
+          let qsData = qs.stringify({
+            page:currenPage,
+            category:idCat,
+            sortBy:sortData
+          })
+          navigate(`?${qsData}`)
       }
-      isMounted.current = true;
+        isMounted.current = true;
     },[idCategpries,sortData,currenPage])
 
     const skeleton = [...Array(8)].map((_, i) => <Skeleton key={i} />);

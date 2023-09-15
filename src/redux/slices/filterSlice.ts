@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+export type SortData = {name:'популярности', sort:'rating'} |
+                        {name:'цене', sort:'price',} | 
+                        {name:'алфавиту', sort:'title',}
 interface FilterSliceState {
   categoryId:number;
-  sort:{
-    name:string;
-    sort:string;
-  }
+  sort:SortData
   search:string;
   currentPage:number;
 }
@@ -13,7 +13,7 @@ interface FilterSliceState {
 const initialState:FilterSliceState = { 
     categoryId:0,
     sort: {
-        name:'популярности', sort:'rating'
+        name:'популярности', sort:'rating',
     },
     search: '',
     currentPage: 1,
@@ -26,8 +26,10 @@ const filterSlice = createSlice({
     setCategoryId(state, actions:PayloadAction<number>){
         state.categoryId = actions.payload
     },
-    setSort(state, actions:PayloadAction<{name:string, sort:string}>){
+    setSort(state, actions:PayloadAction<SortData>){
+      if(actions.payload){
         state.sort = actions.payload
+      }
     },
     searchInput(state, actions:PayloadAction<string>){
       state.search = actions.payload
