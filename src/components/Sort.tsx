@@ -1,6 +1,8 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { setSort } from '../redux/slices/filterSlice';
+import { RootState } from '../redux/store';
+import { useAppDispatch } from '../redux/store';
 
 type ListSort = {
   name:string;
@@ -12,10 +14,9 @@ export const list:ListSort[] = [{name:'популярности', sort:'rating'}
               {name:'алфавиту', sort:'title',}
             ];
 export function Sort() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const pupupCloseRef = React.useRef<HTMLDivElement>(null)
-  const typeSort = useSelector((state:{filter:{sort:{sort:string; 
-                                                     name:string}}}) => state.filter.sort);
+  const typeSort = useSelector((state:RootState) => state.filter.sort);
   
   const [openPopup, setOpenPopup] = React.useState(false);
   const onClickPopup = (obj:ListSort) => {
@@ -24,9 +25,12 @@ export function Sort() {
   }
 
   React.useEffect(() => {
-    const handleClickOutside = (event:any) => {
+    const handleClickOutside = (event:MouseEvent) => {
+      const _event = event as MouseEvent & {
+        path: Node[];
+      }
       const path = event.composedPath();
-      if(!path.includes(pupupCloseRef.current)){
+      if(pupupCloseRef.current && !path.includes(pupupCloseRef.current)){
         setOpenPopup(false)
       }
     }
@@ -52,14 +56,14 @@ export function Sort() {
                 />
               </svg>
               <b>Сортировка по:</b>
-              <span onClick={() => setOpenPopup(!openPopup)}>{typeSort.name}</span>
+              <span onClick={() => setOpenPopup(!openPopup)}>{typeSort?.name}</span>
             </div>
             {openPopup && (<div className="sort__popup">
               <ul>
                 {list.map((obj,i) => (
                   <li key={i} 
                       onClick={() => onClickPopup(obj)} 
-                      className={typeSort.sort == obj.sort ? 'active' : ''}>{obj.name}</li>
+                      className={typeSort.sort == obj.sort ? 'active' : ''}>{obj?.name}</li>
                 ))}
               </ul>
             </div>)}

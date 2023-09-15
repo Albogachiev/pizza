@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../redux/store';
 
 import { fullPizzaData } from '../../redux/slices/pizzaSlice';
 
@@ -12,9 +12,10 @@ export function FullPizza(){
     }>();
 
     const { id } = useParams();
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     React.useEffect(() => {
+      //@ts-ignore
         dispatch(fullPizzaData(id))
         .then((el) => setPizza(el.payload))
     },[]);

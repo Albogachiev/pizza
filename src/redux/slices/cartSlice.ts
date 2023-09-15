@@ -1,6 +1,20 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState = { 
+export type CartItem = {
+    id: string;
+    title:string;
+    price:number;
+    sizes:number;
+    types:string;
+    imageUrl:string;
+    count:number;
+   }
+   interface cartSliceState {
+    totalPrice:number;
+    items:CartItem[];
+   }
+
+const initialState:cartSliceState = { 
     totalPrice:0,
     items:[],
  }
@@ -9,16 +23,10 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    // addProductCart(state, actions){
-    //     state.items.push(actions.payload);
-    //     state.totalPrice = state.items.reduce((sum, obj) => {
-    //         return Number(obj.price) + sum
-    //     },0)
-    removeProduct(state, actions){
+    removeProduct(state, actions:PayloadAction<string>){
         state.items = state.items.filter((el) => el.id !== actions.payload)
     },
-    addProductCart(state, actions){
-        console.log(actions.payload)
+    addProductCart(state, actions:PayloadAction<CartItem>){
         const findItem = state.items.find((obj) => obj.id === actions.payload.id);
         if(findItem){
             findItem.count++;
@@ -29,25 +37,27 @@ const cartSlice = createSlice({
             })
         }
         state.totalPrice = state.items.reduce((sum, obj) => {
-                    return Number(obj.price) + sum
+                    return obj.price + sum
                 },0)
     },
-    repeadAddProductCart(state, actions){
+    repeadAddProductCart(state, actions: PayloadAction<string>){
         const elemCart = state.items.find((el) => el.id === actions.payload);
         if(elemCart){
             elemCart.count++;
         }
         state.totalPrice = state.items.reduce((sum, obj) => {
-            return Number(obj.price) + sum
+            return obj.price + sum
         },0)
     },
-    removeProductCart(state, actions){
+    removeProductCart(state, actions:PayloadAction<string>){
         const minusElem = state.items.find((el) => el.id === actions.payload);
-        if(minusElem.count <= 1){
-            state.items = state.items.filter((el) => el.id !== minusElem.id);
-        }
         if(minusElem){
-            minusElem.count-=1;
+            if(minusElem.count <= 1){
+                state.items = state.items.filter((el) => el.id !== minusElem.id);
+            }
+            if(minusElem){
+                minusElem.count-=1;
+            }
         }
     },
     removeItem(state, actions){

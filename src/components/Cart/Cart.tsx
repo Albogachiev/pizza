@@ -1,32 +1,27 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useAppDispatch } from '../../redux/store';
 
 import { ItemInCart } from './ItemInCart';
 import { clearItems } from '../../redux/slices/cartSlice';
 import { CartEmpty } from './CartEmpty';
-
-type StateItems = {
-  cart:{
-    items:any;
-  };
-}
+import { RootState } from '../../redux/store';
 
 export const Cart:React.FC = () => {
-  const dispatch = useDispatch();
-  const items = useSelector((state:StateItems) => state.cart.items);
-  const sumCart = useSelector((state:StateItems) => state.cart.items?.reduce((sum:number, obj:{price:number; 
-                                                                                               count:number}) => {
+  const dispatch = useAppDispatch();
+  const items = useSelector((state:RootState) => state.cart.items);
+  const sumCart = useSelector((state:RootState) => state.cart.items?.reduce((sum, obj) => {
     return (obj.price * obj.count) + sum
   },0));
 
-  const itemsQuantity = items?.reduce((sum:number, obj:{count:number}) => {
+  const itemsQuantity = items.reduce((sum, obj) => {
     return sum + obj.count
   },0)
 
 function clearCart(){
     if(window.confirm('Очистить корзину?')){
-        dispatch(clearItems())
+        dispatch(clearItems(''))
     }
    }
 
@@ -59,7 +54,7 @@ function clearCart(){
         </div>
       </div>
 
-      {items?.map((el:any,i:number) =>  <ItemInCart key={i} {...el} />)}
+      {items.map((el,i) =>  <ItemInCart key={i} {...el} />)}
 
     <div className="cart__bottom">
               <div className="cart__bottom-details">

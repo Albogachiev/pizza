@@ -2,6 +2,8 @@ import React from 'react';
 import { useSelector, useDispatch} from 'react-redux';
 import qs  from 'qs';
 import { useNavigate } from 'react-router-dom';
+import { RootState } from '../redux/store';
+import { useAppDispatch } from '../redux/store';
 
 import { setCategoryId, setFilters } from '../redux/slices/filterSlice';
 import { fetchPizzas } from '../redux/slices/pizzaSlice';
@@ -11,31 +13,27 @@ import { Categories } from '../components/Categories';
 import { Sort, list } from '../components/Sort';
 import { Pagination } from '../components/Pagination/Pagination';
 
-type FilterState = {
-  filter:{
-    currentPage:number;
-    search:string;
-    categoryId:number;
-    sort:{sort:string}
-  };
-  pizza:{
-    items:any;
-    status:any
-  }
-}
+type FilterNotFound = {
+  title:string;
+  id:string;
+  price:number;
+  imageUrl:string;
+  types:number[];
+  sizes:number[];
+};
 
 export const Home:React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const setIdCategories = (id:number) => dispatch(setCategoryId(id));
   // const setCurrentPage = (num:number) => dispatch(setCurrentPage(num));
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
-  const currenPage = useSelector((state:FilterState) => state.filter.currentPage);
-  const searchValue = useSelector((state:FilterState) => state.filter.search);
-  const idCategpries = useSelector((state:FilterState) => state.filter.categoryId);
-  const sortData = useSelector((state:FilterState) => state.filter.sort.sort); 
-  const {items, status} = useSelector((state:FilterState) => state.pizza);
+  const currenPage = useSelector((state:RootState) => state.filter.currentPage);
+  const searchValue = useSelector((state:RootState) => state.filter.search);
+  const idCategpries = useSelector((state:RootState) => state.filter.categoryId);
+  const sortData = useSelector((state:RootState) => state.filter.sort?.sort); 
+  const {items, status} = useSelector((state:RootState) => state.pizza);
   
     const idCat = idCategpries > 0 ? `${idCategpries}` : '';
     //const searchUrl = searchValue ? `&search=${searchValue}` : ''; 
@@ -55,7 +53,6 @@ export const Home:React.FC = () => {
 
     async function getDataUrl(){
       if(!isSearch.current){
-          //@ts-ignore
           dispatch(fetchPizzas({
             currenPage,
             idCat,
@@ -73,8 +70,8 @@ export const Home:React.FC = () => {
     React.useEffect(() => {
       if(isMounted.current){
         let qsData = qs.stringify({
-          page:String(currenPage),
-          category:String(idCat),
+          page:currenPage,
+          category:idCat,
           sortBy:sortData
         })
         navigate(`?${qsData}`) 
@@ -83,10 +80,11 @@ export const Home:React.FC = () => {
     },[idCategpries,sortData,currenPage])
 
     const skeleton = [...Array(8)].map((_, i) => <Skeleton key={i} />);
-    const filteredItems = items.filter((obj:any) => {
+    const filteredItems = items.filter((obj:{title:string}) => {
       return obj.title.toLowerCase().includes(searchValue.toLowerCase());
     })
-    const itemsData = filteredItems.map((el:any, i:number) => <PizzaBlock {...el} />);
+    
+    const itemsData = filteredItems.map((el:FilterNotFound, i:number) => <PizzaBlock key={i} {...el} />);
 
   return (
     <>

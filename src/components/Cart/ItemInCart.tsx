@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../redux/store';
 
 import { repeadAddProductCart, removeProduct, removeProductCart } from '../../redux/slices/cartSlice';
 
@@ -7,15 +7,15 @@ type ItemProps = {
   title:string;
   id:string;
   price:number;
-  size:number;
-  type:string;
+  sizes:number;
+  types:string;
   count:number;
   imageUrl:string
 }
-export const ItemInCart:React.FC <ItemProps> = ({title, id, price, size, type, count, imageUrl}) => {
-   const dispatch = useDispatch();
+export const ItemInCart:React.FC <ItemProps> = ({title, id, price, sizes, types, count, imageUrl}) => {
+   const dispatch = useAppDispatch();
    let priceData = price * count;
-
+   
    function clickPlus(){
      dispatch(repeadAddProductCart(id));
    }
@@ -38,7 +38,7 @@ alt="Pizza"
 </div>
 <div className="cart__item-info">
 <h3>{title}</h3>
-<p>{type} {size} см</p>
+<p>{types} {sizes} см</p>
 </div>
 <div className="cart__item-count">
 <div onClick={clickMinus} className="button button--outline button--circle cart__item-count-minus">

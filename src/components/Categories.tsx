@@ -1,10 +1,10 @@
 type CategoriesProps = {
   idCategpries:number;
-  setIdCategories:any
+  setIdCategories:(i:number) => void;
 }
 
 export const Categories:React.FC <CategoriesProps> = ({idCategpries, setIdCategories}) => {
-  const categories = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'];
+  const categories:string[] = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'];
   return (
     <div className="categories">
     <ul>
