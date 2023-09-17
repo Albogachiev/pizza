@@ -3,16 +3,28 @@ import { Link, useLocation } from 'react-router-dom';
 import { Search } from './Search/Search';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
+import React from 'react';
 
 export const Header:React.FC = () => {
   const items = useSelector((state:RootState) => state.cart.items);
+  const ref = React.useRef(false);
+  
   const itemsQuantity = items.reduce((sum, obj) => {
-    return sum + obj.count
+    return obj.count + sum
   },0);
   const sumCart = items.reduce((sum, obj) => {
-    return sum + obj.price
+    return obj.price * obj.count + sum
   },0);
 
+
+  React.useEffect(() => {
+    if(ref.current){
+      const json = JSON.stringify(items);
+      localStorage.setItem('cart', json);
+    }
+    ref.current = true
+  },[items, sumCart])
+  
   const location = useLocation();
 
   return (

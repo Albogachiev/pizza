@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { getCartFromLS } from '../utils/funcLocaleStorage';
 
 export type CartItem = {
     id: string;
@@ -13,10 +14,10 @@ export type CartItem = {
     totalPrice:number;
     items:CartItem[];
    }
-
+let { items, totalPrice } = getCartFromLS()
 const initialState:cartSliceState = { 
-    totalPrice:0,
-    items:[],
+    items,
+    totalPrice,
  }
 
 const cartSlice = createSlice({
@@ -36,18 +37,14 @@ const cartSlice = createSlice({
                 count:1
             })
         }
-        state.totalPrice = state.items.reduce((sum, obj) => {
-                    return obj.price + sum
-                },0)
+        state.totalPrice = state.totalPrice
     },
     repeadAddProductCart(state, actions: PayloadAction<string>){
         const elemCart = state.items.find((el) => el.id === actions.payload);
         if(elemCart){
             elemCart.count++;
         }
-        state.totalPrice = state.items.reduce((sum, obj) => {
-            return obj.price + sum
-        },0)
+        state.totalPrice = state.totalPrice
     },
     removeProductCart(state, actions:PayloadAction<string>){
         const minusElem = state.items.find((el) => el.id === actions.payload);
