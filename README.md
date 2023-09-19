@@ -71,6 +71,6 @@
 * React Content Loader (скелетон)
 * React Pagination (пагинация)
 * Lodash.Debounce
-* React Loadable
+* React lazy
 
 ***

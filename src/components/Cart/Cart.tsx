@@ -8,7 +8,7 @@ import { clearItems } from '../../redux/slices/cartSlice';
 import { CartEmpty } from './CartEmpty';
 import { RootState } from '../../redux/store';
 
-export const Cart:React.FC = () => {
+const Cart:React.FC = () => {
   const dispatch = useAppDispatch();
   const items = useSelector((state:RootState) => state.cart.items);
   const sumCart = useSelector((state:RootState) => state.cart.items?.reduce((sum, obj) => {
@@ -78,3 +78,4 @@ function clearCart(){
 
   )
 }
+export default Cart;

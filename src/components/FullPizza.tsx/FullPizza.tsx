@@ -4,7 +4,7 @@ import { useAppDispatch } from '../../redux/store';
 
 import { fullPizzaData } from '../../redux/slices/pizzaSlice';
 
-export function FullPizza(){
+const FullPizza:React.FC = () => {
     const [pizza, setPizza] = React.useState<{
       imageUrl:string;
       price:number;
@@ -35,4 +35,6 @@ export function FullPizza(){
         сыра и зачастую других ингредиентов, таких как мясо, овощи, грибы и прочие продукты.</p>
     </div>
   )
-}
+};
+
+export default FullPizza;
